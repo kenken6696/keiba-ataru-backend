@@ -3,8 +3,8 @@ version: "3"
 services:
   db:
     image: postgres:10
-  web:
-    build: .
+  api:
+    build: ./docker/api
     volumes:
       - .:/code
     tty: true
@@ -12,3 +12,8 @@ services:
       - 8000:8000
     depends_on:
       - db
+  pytorch:
+    build: ./docker/pytorch/
+    tty: true
+    volumes:
+      - .:/code
