@@ -12,8 +12,3 @@ services:
       - 8000:8000
     depends_on:
       - db
-  pytorch:
-    build: ./docker/pytorch/
-    tty: true
-    volumes:
-      - .:/code

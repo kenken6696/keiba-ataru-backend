@@ -1,9 +1,6 @@
-FROM python:3.7
-ENV PYTHONUNBUFFERED 1
+FROM nvcr.io/nvidia/pytorch:19.07-py3
 RUN apt update && apt install tree
-RUN mkdir -p /code
-RUN mkdir -p /code/static
+RUN mkdir -p /code && mkdir -p /code/static
 WORKDIR /code
-ADD requirements.txt /code/
-RUN pip install -r requirements.txt
 ADD . /code/
+RUN pip install -U pip && pip install -r requirements.txt
