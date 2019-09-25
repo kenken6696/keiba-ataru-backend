@@ -7,9 +7,13 @@ from logzero import logger
 
 HOME_URL='https://www.nankankeiba.com/'
 
+class Race:
+   Date date
+   
+
 def get_uma_csv():
-   race_list_link_list = ['program/00000000000000.do']# TODO use method
-   unique_uma_link_list = []
+   race_list_link_list = ['program/00000000000000.do']# TODO use method with selenium
+   uma_link_set = set()
    df = pd.DataFrame()
    for link in race_list_link_list:
       race_link_list = get_race_link_list_from_race_list_link(link)
@@ -17,15 +21,18 @@ def get_uma_csv():
 
    for link in race_link_list:
       uma_link_list = get_uma_link_list_from_race_link(link)
-      unique_uma_link_list += list(set(uma_link_list))
+      uma_link_set += set(uma_link_list)
    
+   unique_uma_link_list = list(uma_link_set) # TODO use set better
    #logger.info(unique_uma_link_list)
   
    for link in unique_uma_link_list:
       df = pd.concat([df, get_df_from_uma_link(link)]) 
    
-   #df = df.reset_index()
    df.to_csv('/code/data/keiba-ataru/uma.csv')
+
+def pickle_this_week_race():
+   return 
 
 def url_to_soup(url):
     req = requests.get(url)
@@ -60,3 +67,5 @@ def get_df_from_uma_link(uma_link):
     
     df = pd.DataFrame(data=[pd_data + uma_info_list[i*18:18+i*18] for i in range(1,uma_info_num)], columns=pd_columns + uma_info_list[0:18])
     return df
+
+   
