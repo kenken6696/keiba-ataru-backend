@@ -8,3 +8,4 @@ stopit
 xgboost
 tpot
 logzero
+django-rest-swagger
