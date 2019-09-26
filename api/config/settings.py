@@ -25,12 +25,18 @@ SECRET_KEY = '=2^r$it=5254m3901lds38sv6m61531_vlnown=62f07$&&m3*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# add
+ALLOWED_HOSTS = ["0.0.0.0"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # add
+    'apiv1.apps.Apiv1Config',
+    'rest_framework_swagger',
+    # ----
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
