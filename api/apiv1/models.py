@@ -31,7 +31,7 @@ class Horse(models.Model):
         db_table = 'horse'
         unique_together = ('race_name', 'horse_number')
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    race_name =  models.ForeignKey(Race, verbose_name='レース名', on_delete=models.CASCADE)
+    race_name =  models.ForeignKey(Race, related_name='horses', verbose_name='レース名', on_delete=models.CASCADE)
     horse_number = models.PositiveSmallIntegerField(verbose_name='馬順', validators=[validators.MinValueValidator(1), validators.MaxValueValidator(20)])
     horse_name = models.CharField(verbose_name='馬名', max_length=100)
     trio_pred = models.DecimalField(verbose_name='三連複予想', max_digits=4, decimal_places=3)
