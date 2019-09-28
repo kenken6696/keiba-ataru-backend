@@ -1,14 +1,8 @@
 version: "3"
 
 services:
-  db:
-    image: postgres:10
   api:
     build: ./docker/api
-    volumes:
-      - .:/code
     tty: true
     ports:
       - 8000:8000
-    depends_on:
-      - db
