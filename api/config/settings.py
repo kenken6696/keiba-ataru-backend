@@ -34,7 +34,8 @@ ALLOWED_HOSTS = ["0.0.0.0"]
 INSTALLED_APPS = [
     # add
     'apiv1.apps.Apiv1Config',
-    'rest_framework_swagger',
+    'drf_yasg',
+    'rest_framework',# open-api
     # ----
 
     'django.contrib.admin',
@@ -44,7 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-
+# add
+REST_FRAMEWORK = {
+    
+}
+# ----
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

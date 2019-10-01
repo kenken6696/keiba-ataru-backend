@@ -1,5 +1,5 @@
 Django==2.2
-djangorestframework==3.9.3
+djangorestframework==3.10.3
 psycopg2-binary
 deap
 update_checker
@@ -8,4 +8,4 @@ stopit
 xgboost
 tpot
 logzero
-django-rest-swagger
+markdown
