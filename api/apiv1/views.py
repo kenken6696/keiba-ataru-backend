@@ -9,7 +9,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import api_view
 # Create your views here.
 
-class RaceSetListAPIView(generics.ListAPIView):
+class RaceSetListAPIView(generics.ListCreateAPIView):
     """
     検索日時と同週の競走の**リスト**を取得
     date_for_week_filter -- 検索日時
@@ -31,9 +31,19 @@ class RaceSetListAPIView(generics.ListAPIView):
         racesets = RaceSet.objects.filter(date__range = self.get_same_week_range(date_for_week_filter))
         return racesets
 
+
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         logger.info('date_for_week_filter={}のracesetsが照会された'.format(request.query_params.get('date_for_week_filter')))
+        return response
+    
+    def create(self, request):
+        crawl_and_pred_flag = self.request.data['crawl_and_pred_flag']
+        print(crawl_and_pred_flag)
+        if crawl_and_pred_flag != 1:
+            raise serializers.ValidationError('crawl_and_pred_flag:1 is required')
+        response = super().create(self, request)
+        logger.info('racesets{}件登録しました。'.format(request.data))
         return response
 
 class RaceListWithHorseAPIView(generics.ListAPIView):
