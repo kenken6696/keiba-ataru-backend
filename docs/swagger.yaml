@@ -1,0 +1,120 @@
+swagger: '2.0'
+info:
+  title: keiba-ataru API
+  description: API for front
+  version: v1
+host: 0.0.0.0:8000
+schemes:
+  - http
+basePath: /api/v1
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  Basic:
+    type: basic
+security:
+  - Basic: []
+paths:
+  /racesets/:
+    get:
+      operationId: racesets_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RaceSet'
+      tags:
+        - racesets
+    post:
+      operationId: racesets_create
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/RaceSet'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/RaceSet'
+      tags:
+        - racesets
+    parameters: []
+  /racesets/{id}/races/:
+    get:
+      operationId: racesets_races_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Race'
+      tags:
+        - racesets
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+definitions:
+  RaceSet:
+    required:
+      - raceset_name
+      - date
+      - racecourse
+    type: object
+    properties:
+      id:
+        title: Id
+        type: string
+        format: uuid
+        readOnly: true
+      raceset_name:
+        title: "\u7AF6\u8D70\u540D"
+        type: string
+        maxLength: 100
+        minLength: 1
+      date:
+        title: "\u5B9F\u65BD\u65E5"
+        type: string
+        format: date
+      racecourse:
+        title: "\u7AF6\u99AC\u5834"
+        type: string
+        maxLength: 100
+        minLength: 1
+  Race:
+    required:
+      - race_name
+      - round_number
+      - starttime
+    type: object
+    properties:
+      race_name:
+        title: "\u30EC\u30FC\u30B9\u540D"
+        type: string
+        maxLength: 100
+        minLength: 1
+      round_number:
+        title: "\u30E9\u30A6\u30F3\u30C9\u6570"
+        type: integer
+        maximum: 20
+        minimum: 1
+      starttime:
+        title: Starttime
+        type: string
+      horses:
+        title: Horses
+        type: string
+        readOnly: true
