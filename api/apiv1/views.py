@@ -1,19 +1,13 @@
 from django.shortcuts import render
 from rest_framework import generics, serializers
-from rest_framework.views import APIView
 from .serializers import RaceSetSerializer, RaceSerializer, HorseSerializer
 from .models import RaceSet, Race, Horse
 from logzero import logger
 import datetime
+from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework.decorators import api_view
-# Create your views here.
 
 class RaceSetListAPIView(generics.ListCreateAPIView):
-    """
-    検索日時と同週の競走の**リスト**を取得
-    date_for_week_filter -- 検索日時
-    """
     serializer_class = RaceSetSerializer
     
     def get_same_week_range(self, date):
@@ -31,12 +25,15 @@ class RaceSetListAPIView(generics.ListCreateAPIView):
         racesets = RaceSet.objects.filter(date__range = self.get_same_week_range(date_for_week_filter))
         return racesets
 
-
+    date_for_week_filter = openapi.Parameter('date_for_week_filter', openapi.IN_QUERY, description="週間検索用の日にち", type=openapi.FORMAT_DATE)
+    @swagger_auto_schema(description='検索日時と同週の競走のリストを取得', manual_parameters=[date_for_week_filter])
     def list(self, request, *args, **kwargs):
+
         response = super().list(request, *args, **kwargs)
         logger.info('date_for_week_filter={}のracesetsが照会された'.format(request.query_params.get('date_for_week_filter')))
         return response
     
+    @swagger_auto_schema(description='crawl_and_pred')
     def create(self, request):
         crawl_and_pred_flag = self.request.data['crawl_and_pred_flag']
         print(crawl_and_pred_flag)
