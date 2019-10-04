@@ -19,7 +19,7 @@ class Race(models.Model):
         db_table= 'race'
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     race_name = models.CharField(verbose_name='レース名', max_length=100)
-    round_number = models.PositiveSmallIntegerField(verbose_name='ラウンド数', validators=[validators.MinValueValidator(1), validators.MaxValueValidator(20)])
+    round_number = models.PositiveSmallIntegerField(verbose_name='レースナンバー', validators=[validators.MinValueValidator(1), validators.MaxValueValidator(20)])
     starttime = models.TimeField(verbose_name='レース開始時間')
     raceset_name = models.ForeignKey(RaceSet, verbose_name='競走名', on_delete=models.CASCADE)
 
