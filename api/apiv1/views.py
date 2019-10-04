@@ -61,7 +61,7 @@ class RaceSetListAPIView(generics.ListCreateAPIView):
 
 class RaceListWithHorseAPIView(generics.ListAPIView):
     """
-    classdoc
+    raceの操作をする
     
     get:
     racesets(競走名)に属するraceのリストを取得する
