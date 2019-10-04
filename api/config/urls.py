@@ -19,19 +19,19 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 
-schema_view = get_schema_view(
-   openapi.Info(
+swagger_info = openapi.Info(
       title="keiba-ataru API",
       default_version='v1',
       description="API for front",
-   ),
+   )
+schema_view = get_schema_view(
+   swagger_info,
    public=True,
    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('swagger.yaml', schema_view.without_ui(cache_timeout=0)),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0)),
     path('api/v1/', include('apiv1.urls')),
 ]

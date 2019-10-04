@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 # add
-REST_FRAMEWORK = {
-    
+SWAGGER_SETTINGS = {
+   'DEFAULT_INFO': 'config.urls.swagger_info',
 }
 # ----
 MIDDLEWARE = [
