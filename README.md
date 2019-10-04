@@ -4,8 +4,8 @@ frontは[こちら](https://github.com/shwan01/keiba-app-frontend)
 
 keyword : Django REST framework, Swagger, ML, tpot, Docker
 ## docs
-- docs/swagger.yaml  
-    drf-yasgでauto-generateしたyaml
+- docs/swagger.yml  
+    drf-yasgでauto-generateしたyml
 ## 環境構築
 ```
 docker-compose -f "keiba-ataru-backend/docker-compose.yml" up -d --build
