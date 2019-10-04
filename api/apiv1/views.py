@@ -10,7 +10,7 @@ from drf_yasg.inspectors import SwaggerAutoSchema
 
 class RaceSetListAPIView(generics.ListCreateAPIView):
     """
-    classdoc
+    racesetsを操作する
     
     get:
     date_for_week_filterと同週のracesets(競争名)のリストを取得する
