@@ -1,120 +1,169 @@
-swagger: '2.0'
-info:
-  title: keiba-ataru API
-  description: API for front
-  version: v1
-host: 0.0.0.0:8000
-schemes:
-  - http
-basePath: /api/v1
-consumes:
-  - application/json
-produces:
-  - application/json
-securityDefinitions:
-  Basic:
-    type: basic
-security:
-  - Basic: []
-paths:
-  /racesets/:
-    get:
-      operationId: racesets_list
-      description: ''
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/RaceSet'
-      tags:
-        - racesets
-    post:
-      operationId: racesets_create
-      description: ''
-      parameters:
-        - name: data
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/RaceSet'
-      responses:
-        '201':
-          description: ''
-          schema:
-            $ref: '#/definitions/RaceSet'
-      tags:
-        - racesets
-    parameters: []
-  /racesets/{id}/races/:
-    get:
-      operationId: racesets_races_list
-      description: ''
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Race'
-      tags:
-        - racesets
-    parameters:
-      - name: id
-        in: path
-        required: true
-        type: string
-definitions:
-  RaceSet:
-    required:
-      - raceset_name
-      - date
-      - racecourse
-    type: object
-    properties:
-      id:
-        title: Id
-        type: string
-        format: uuid
-        readOnly: true
-      raceset_name:
-        title: "\u7AF6\u8D70\u540D"
-        type: string
-        maxLength: 100
-        minLength: 1
-      date:
-        title: "\u5B9F\u65BD\u65E5"
-        type: string
-        format: date
-      racecourse:
-        title: "\u7AF6\u99AC\u5834"
-        type: string
-        maxLength: 100
-        minLength: 1
-  Race:
-    required:
-      - race_name
-      - round_number
-      - starttime
-    type: object
-    properties:
-      race_name:
-        title: "\u30EC\u30FC\u30B9\u540D"
-        type: string
-        maxLength: 100
-        minLength: 1
-      round_number:
-        title: "\u30E9\u30A6\u30F3\u30C9\u6570"
-        type: integer
-        maximum: 20
-        minimum: 1
-      starttime:
-        title: Starttime
-        type: string
-      horses:
-        title: Horses
-        type: string
-        readOnly: true
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "keiba-ataru API",
+        "description": "API for front",
+        "version": "v1"
+    },
+    "basePath": "/api/v1",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "Basic": {
+            "type": "basic"
+        }
+    },
+    "security": [
+        {
+            "Basic": []
+        }
+    ],
+    "paths": {
+        "/racesets/": {
+            "get": {
+                "operationId": "racesets_list",
+                "description": "date_for_week_filter\u3068\u540c\u9031\u306eracesets(\u7af6\u4e89\u540d)\u306e\u30ea\u30b9\u30c8\u3092\u53d6\u5f97\u3059\u308b",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/RaceSet"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "racesets"
+                ]
+            },
+            "post": {
+                "operationId": "racesets_create",
+                "description": "crawl_and_pred_flag\u304c1\u306e\u5834\u5408\u3001\u4eca\u9031\u306eracesets\u4ee5\u4e0b\u3092\u53d6\u5f97\u3057\u3001\u30e2\u30c7\u30eb\u3088\u308a\u4e88\u6e2c\u3057\u305f\u7d50\u679c\u3092DB\u4fdd\u5b58\u3059\u308b",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RaceSet"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/RaceSet"
+                        }
+                    }
+                },
+                "tags": [
+                    "racesets"
+                ]
+            },
+            "parameters": []
+        },
+        "/racesets/{id}/races/": {
+            "get": {
+                "operationId": "racesets_races_list",
+                "description": "racesets(\u7af6\u8d70\u540d)\u306b\u5c5e\u3059\u308brace\u306e\u30ea\u30b9\u30c8\u3092\u53d6\u5f97\u3059\u308b",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Race"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "racesets"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "RaceSet": {
+            "required": [
+                "raceset_name",
+                "date",
+                "racecourse"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string",
+                    "format": "uuid",
+                    "readOnly": true
+                },
+                "raceset_name": {
+                    "title": "\u7af6\u8d70\u540d",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "date": {
+                    "title": "\u5b9f\u65bd\u65e5",
+                    "type": "string",
+                    "format": "date"
+                },
+                "racecourse": {
+                    "title": "\u7af6\u99ac\u5834",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                }
+            }
+        },
+        "Race": {
+            "required": [
+                "race_name",
+                "round_number",
+                "starttime"
+            ],
+            "type": "object",
+            "properties": {
+                "race_name": {
+                    "title": "\u30ec\u30fc\u30b9\u540d",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "round_number": {
+                    "title": "\u30ec\u30fc\u30b9\u30ca\u30f3\u30d0\u30fc",
+                    "type": "integer",
+                    "maximum": 20,
+                    "minimum": 1
+                },
+                "starttime": {
+                    "title": "Starttime",
+                    "type": "string"
+                },
+                "horses": {
+                    "title": "Horses",
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        }
+    }
+}

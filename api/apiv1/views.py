@@ -49,7 +49,8 @@ class RaceSetListAPIView(generics.ListCreateAPIView):
         logger.info('date_for_week_filter={}のracesetsが照会された'.format(request.query_params.get('date_for_week_filter')))
         return response
     
-    @swagger_auto_schema(description='crawl_and_pred')
+    crawl_and_pred_flag = openapi.Parameter(name='crawl_and_pred_flag', in_=openapi.IN_QUERY, description="今週のレース情報をクロールして、作成したモデルから確率予測を行うフラグ", type=openapi.FORMAT_INT64)
+    @swagger_auto_schema(manual_parameters=[date_for_week_filter])
     def create(self, request):
         crawl_and_pred_flag = self.request.data['crawl_and_pred_flag']
         print(crawl_and_pred_flag)
@@ -74,7 +75,6 @@ class RaceListWithHorseAPIView(generics.ListAPIView):
             return Race.objects.none()
         return Race.objects.filter(raceset_name=self.kwargs['pk'])
     
-    @swagger_auto_schema(description='検索日時と同週の競走のリストを取得')
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         logger.info('id={}のracesetが照会された'.format(request.kwargs['pk']))
