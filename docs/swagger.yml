@@ -26,7 +26,7 @@
         "/racesets/": {
             "get": {
                 "operationId": "racesets_list",
-                "description": "date_for_week_filter\u3068\u540c\u9031\u306eracesets(\u7af6\u4e89\u540d)\u306e\u30ea\u30b9\u30c8\u3092\u53d6\u5f97\u3059\u308b",
+                "description": "filter_by_this_week\u304ctrue\u306e\u5834\u5408\u3001\u4eca\u9031\u306eracesets(\u7af6\u4e89\u540d)\u306e\u30ea\u30b9\u30c8\u3092\u53d6\u5f97\u3059\u308b",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -105,7 +105,8 @@
             "required": [
                 "raceset_name",
                 "date",
-                "racecourse"
+                "racecourse",
+                "races"
             ],
             "type": "object",
             "properties": {
@@ -131,13 +132,21 @@
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 1
+                },
+                "races": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "uniqueItems": true
                 }
             }
         },
         "Race": {
             "required": [
                 "race_name",
-                "round_number",
+                "race_number",
                 "starttime"
             ],
             "type": "object",
@@ -148,7 +157,7 @@
                     "maxLength": 100,
                     "minLength": 1
                 },
-                "round_number": {
+                "race_number": {
                     "title": "\u30ec\u30fc\u30b9\u30ca\u30f3\u30d0\u30fc",
                     "type": "integer",
                     "maximum": 20,

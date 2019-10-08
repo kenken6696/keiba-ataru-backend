@@ -7,13 +7,15 @@ import datetime
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.inspectors import SwaggerAutoSchema
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 class RaceSetListAPIView(generics.ListCreateAPIView):
     """
     racesetsを操作する
     
     get:
-    date_for_week_filterと同週のracesets(競争名)のリストを取得する
+    filter_by_this_weekがtrueの場合、今週のracesets(競争名)のリストを取得する
     
     post:
     crawl_and_pred_flagが1の場合、今週のracesets以下を取得し、モデルより予測した結果をDB保存する
@@ -21,8 +23,8 @@ class RaceSetListAPIView(generics.ListCreateAPIView):
     serializer_class = RaceSetSerializer
     swagger_schema = SwaggerAutoSchema
     
-    def get_same_week_range(self, date):
-        req_date = datetime.datetime.strptime(date, "%Y-%m-%d")
+    def get_this_week_range(self):
+        req_date = datetime.date.today()
         dist_from_monday = req_date.weekday()
         dist_from_next_sunday = 6 - dist_from_monday
         monday_date_on_same_week = req_date - datetime.timedelta(days=dist_from_monday)
@@ -33,30 +35,31 @@ class RaceSetListAPIView(generics.ListCreateAPIView):
         # need this when using dynamically request parameters in view
         if getattr(self, 'swagger_fake_view', False):
         # queryset just for schema generation metadata
-            return Race.objects.none()
+            return RaceSet.objects.none()
         
-        date_for_week_filter = self.request.query_params.get('date_for_week_filter')
-        if date_for_week_filter is None:
-            raise serializers.ValidationError('date_for_week_filter parameter is required, like 2019-06-21')
-        racesets = RaceSet.objects.filter(date__range = self.get_same_week_range(date_for_week_filter))
+        filter_by_this_week = self.request.query_params.get('filter_by_this_week')
+        logger.info(filter_by_this_week)
+        if filter_by_this_week != 'true':# TODO serializerでちゃんとやる
+            raise serializers.ValidationError({"validation_error":"filter_by_this_week:true is required"})
+        racesets = RaceSet.objects.filter(date__range = self.get_this_week_range())
         return racesets
 
-    date_for_week_filter = openapi.Parameter(name='date_for_week_filter', in_=openapi.IN_QUERY, description="週間検索用の日にち", type=openapi.FORMAT_DATE)
-    @swagger_auto_schema(description='検索日時と同週の競走のリストを取得', manual_parameters=[date_for_week_filter])
+    filter_by_this_week = openapi.Parameter(name='filter_by_this_week', in_=openapi.IN_QUERY, description="今週分の検索フラグ", type=openapi.TYPE_BOOLEAN)
+    @swagger_auto_schema(description='検索日時と同週の競走のリストを取得', manual_parameters=[filter_by_this_week])
     def list(self, request, *args, **kwargs):
 
         response = super().list(request, *args, **kwargs)
-        logger.info('date_for_week_filter={}のracesetsが照会された'.format(request.query_params.get('date_for_week_filter')))
+        logger.info('filter_by_this_week={}のracesetsが照会された'.format(request.query_params.get('filter_by_this_week')))
         return response
     
-    crawl_and_pred_flag = openapi.Parameter(name='crawl_and_pred_flag', in_=openapi.IN_QUERY, description="今週のレース情報をクロールして、作成したモデルから確率予測を行うフラグ", type=openapi.FORMAT_INT64)
-    @swagger_auto_schema(manual_parameters=[date_for_week_filter])
+    crawl_and_pred_flag = openapi.Parameter(name='crawl_and_pred_flag', in_=openapi.IN_BODY
+    , description="今週のレース情報をクロールして、作成したモデルから確率予測を行うフラグ", type=openapi.FORMAT_INT64)
+    @swagger_auto_schema(manual_parameters=[crawl_and_pred_flag])
     def create(self, request):
-        crawl_and_pred_flag = self.request.data['crawl_and_pred_flag']
-        print(crawl_and_pred_flag)
-        if crawl_and_pred_flag != 1:
-            raise serializers.ValidationError('crawl_and_pred_flag:1 is required')
-        response = super().create(self, request)
+        if self.request.data['crawl_and_pred_flag'] != 1:
+            raise serializers.ValidationError({"validation_error":"crawl_and_pred_flag: 1 is required"})
+        
+        response = Response({"result_cde":0})
         logger.info('racesets{}件登録しました。'.format(request.data))
         return response
 

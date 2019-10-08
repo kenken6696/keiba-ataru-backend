@@ -27,7 +27,8 @@ def get_uma_csv():
    
    df.to_csv('/code/api/data/uma.csv')
 
-def pickle_this_week_race():
+def crawl_df_of_this_week_race():
+   
    return 
 
 def __url_to_soup(url):

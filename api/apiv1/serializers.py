@@ -4,7 +4,7 @@ from .models import RaceSet, Race, Horse
 class RaceSetSerializer(serializers.ModelSerializer):
     class Meta:
         model = RaceSet
-        fields =  ('id', 'raceset_name', 'date', 'racecourse')
+        fields =  ('id', 'raceset_name', 'date', 'racecourse', 'races')
 
 class HorseSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,7 +17,7 @@ class RaceSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Race
-        fields =  ('race_name', 'round_number', 'starttime', 'horses')
+        fields =  ('race_name', 'race_number', 'starttime', 'horses')
 
     def get_horses(self, instance):
         horses_config = instance.horses.all().order_by('horse_number')
