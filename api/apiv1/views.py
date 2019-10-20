@@ -12,13 +12,13 @@ from rest_framework.response import Response
 
 class RaceSetListAPIView(generics.ListCreateAPIView):
     """
-    racesetsを操作する
+    post and get racesets
     
     get:
-    filter_by_this_weekがtrueの場合、今週のracesets(競争名)のリストを取得する
+    get a raceset list on this week
     
     post:
-    crawl_and_pred_flagが1の場合、今週のracesets以下を取得し、モデルより予測した結果をDB保存する
+    crawl a website for raceset info on thid week, and post the predictions using my model
     """
     serializer_class = RaceSetSerializer
     swagger_schema = SwaggerAutoSchema
@@ -65,10 +65,10 @@ class RaceSetListAPIView(generics.ListCreateAPIView):
 
 class RaceListWithHorseAPIView(generics.ListAPIView):
     """
-    raceの操作をする
+    get race
     
     get:
-    racesets(競走名)に属するraceのリストを取得する
+    get a race list which a raceset had
     """
     serializer_class = RaceSerializer
     def get_queryset(self):
