@@ -18,7 +18,7 @@ class RaceSetListAPIView(generics.ListCreateAPIView):
     get a raceset list on this week
     
     post:
-    crawl a website for raceset info on thid week, and post the predictions using my model
+    crawl a website for raceset info on this week, and insert the predictions using my model
     """
     serializer_class = RaceSetSerializer
     swagger_schema = SwaggerAutoSchema
@@ -40,7 +40,7 @@ class RaceSetListAPIView(generics.ListCreateAPIView):
         filter_by_this_week = self.request.query_params.get('filter_by_this_week')
         logger.info(filter_by_this_week)
         if filter_by_this_week != 'true':# TODO serializerでちゃんとやる
-            raise serializers.ValidationError({"validation_error":"filter_by_this_week:true is required"})
+            raise serializers.ValidationError({"validation_error":"{filter_by_this_week:true} is required"})
         racesets = RaceSet.objects.filter(date__range = self.get_this_week_range())
         return racesets
 
