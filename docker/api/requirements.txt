@@ -10,3 +10,4 @@ tpot
 logzero
 markdown
 drf-yasg
+selenium
