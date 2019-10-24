@@ -1,6 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 import time
+# you need chrome78 to use selenium
+# curl https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+# echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
+# apt update
+# apt install google-chrome-stable
 
 options = webdriver.ChromeOptions()
 options.add_argument('--headless')

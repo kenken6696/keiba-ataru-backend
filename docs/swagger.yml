@@ -26,7 +26,7 @@
         "/racesets/": {
             "get": {
                 "operationId": "racesets_list",
-                "description": "filter_by_this_week\u304ctrue\u306e\u5834\u5408\u3001\u4eca\u9031\u306eracesets(\u7af6\u4e89\u540d)\u306e\u30ea\u30b9\u30c8\u3092\u53d6\u5f97\u3059\u308b",
+                "description": "get a raceset list on this week",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -45,7 +45,7 @@
             },
             "post": {
                 "operationId": "racesets_create",
-                "description": "crawl_and_pred_flag\u304c1\u306e\u5834\u5408\u3001\u4eca\u9031\u306eracesets\u4ee5\u4e0b\u3092\u53d6\u5f97\u3057\u3001\u30e2\u30c7\u30eb\u3088\u308a\u4e88\u6e2c\u3057\u305f\u7d50\u679c\u3092DB\u4fdd\u5b58\u3059\u308b",
+                "description": "crawl a website for raceset info on this week, and insert the predictions using my model",
                 "parameters": [
                     {
                         "name": "data",
@@ -73,7 +73,7 @@
         "/racesets/{id}/races/": {
             "get": {
                 "operationId": "racesets_races_list",
-                "description": "racesets(\u7af6\u8d70\u540d)\u306b\u5c5e\u3059\u308brace\u306e\u30ea\u30b9\u30c8\u3092\u53d6\u5f97\u3059\u308b",
+                "description": "get a race list which a raceset had",
                 "parameters": [],
                 "responses": {
                     "200": {

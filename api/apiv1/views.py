@@ -12,13 +12,13 @@ from rest_framework.response import Response
 
 class RaceSetListAPIView(generics.ListCreateAPIView):
     """
-    racesetsを操作する
+    post and get racesets
     
     get:
-    filter_by_this_weekがtrueの場合、今週のracesets(競争名)のリストを取得する
+    get a raceset list on this week
     
     post:
-    crawl_and_pred_flagが1の場合、今週のracesets以下を取得し、モデルより予測した結果をDB保存する
+    crawl a website for raceset info on this week, and insert the predictions using my model
     """
     serializer_class = RaceSetSerializer
     swagger_schema = SwaggerAutoSchema
@@ -40,12 +40,12 @@ class RaceSetListAPIView(generics.ListCreateAPIView):
         filter_by_this_week = self.request.query_params.get('filter_by_this_week')
         logger.info(filter_by_this_week)
         if filter_by_this_week != 'true':# TODO serializerでちゃんとやる
-            raise serializers.ValidationError({"validation_error":"filter_by_this_week:true is required"})
+            raise serializers.ValidationError({"validation_error: filter_by_this_week:true is required"})
         racesets = RaceSet.objects.filter(date__range = self.get_this_week_range())
         return racesets
 
-    filter_by_this_week = openapi.Parameter(name='filter_by_this_week', in_=openapi.IN_QUERY, description="今週分の検索フラグ", type=openapi.TYPE_BOOLEAN)
-    @swagger_auto_schema(description='検索日時と同週の競走のリストを取得', manual_parameters=[filter_by_this_week])
+    filter_by_this_week = openapi.Parameter(name='filter_by_this_week', in_=openapi.IN_QUERY, description="filter racesets by this week", type=openapi.TYPE_BOOLEAN)
+    @swagger_auto_schema(manual_parameters=[filter_by_this_week])
     def list(self, request, *args, **kwargs):
 
         response = super().list(request, *args, **kwargs)
@@ -53,7 +53,7 @@ class RaceSetListAPIView(generics.ListCreateAPIView):
         return response
     
     crawl_and_pred_flag = openapi.Parameter(name='crawl_and_pred_flag', in_=openapi.IN_BODY
-    , description="今週のレース情報をクロールして、作成したモデルから確率予測を行うフラグ", type=openapi.FORMAT_INT64)
+    , description="required", type=openapi.FORMAT_INT64)
     @swagger_auto_schema(manual_parameters=[crawl_and_pred_flag])
     def create(self, request):
         if self.request.data['crawl_and_pred_flag'] != 1:
@@ -65,10 +65,10 @@ class RaceSetListAPIView(generics.ListCreateAPIView):
 
 class RaceListWithHorseAPIView(generics.ListAPIView):
     """
-    raceの操作をする
+    get race
     
     get:
-    racesets(競走名)に属するraceのリストを取得する
+    get a race list which a raceset had
     """
     serializer_class = RaceSerializer
     def get_queryset(self):
