@@ -56,12 +56,12 @@ class RaceSetListAPIView(generics.ListCreateAPIView):
     , description="required", type=openapi.FORMAT_INT64)
     @swagger_auto_schema(manual_parameters=[crawl_and_pred_flag])
     def create(self, request):
-        if self.request.data['crawl_and_pred_flag'] != 1:
-            raise serializers.ValidationError({"validation_error":"crawl_and_pred_flag: 1 is required"})
+        # if self.request.data['crawl_and_pred_flag'] != 1:
+        #     raise serializers.ValidationError({"validation_error":"crawl_and_pred_flag: 1 is required"})
         
-        response = Response({"result_cde":0})
+        # response = Response({"result_cde":0})
         logger.info('racesets{}件登録しました。'.format(request.data))
-        return response
+        return super().create(request)
 
 class RaceListWithHorseAPIView(generics.ListAPIView):
     """

@@ -11,6 +11,7 @@ HOME_URL='https://www.nankankeiba.com/'
 def update_uma_csv():
    uma_link_set = set()
    df = pd.DataFrame()
+   
    raceset_link_list = __get_raceset_link_list_from_entries_link()
    logger.info(raceset_link_list)
 
@@ -27,7 +28,7 @@ def update_uma_csv():
 def crawl_df_of_this_week_race():
    uma_link_set = set()
    
-   raceset_link_list = __get_raceset_link_list_from_entries_link(filter_by_this_week=True)
+   raceset_link_list = __get_raceset_link_list_from_entries_link()
    for link in raceset_link_list:
       uma_link_list = __get_uma_link_list_from_race_link(link)
       uma_link_set |= set(uma_link_list)

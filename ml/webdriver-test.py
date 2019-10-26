@@ -16,8 +16,8 @@ driver.get('https://www.nankankeiba.com/program/00000000000000.do')
 print(driver.title)
 driver.save_screenshot('before.png')
 
-btn = driver.find_element_by_xpath('//*[@id="race-cal"]/div/a')
-btn.click()
+btn = driver.find_element_by_xpath('//*[@id="race-cal"]/table/tbody/tr[1]/th[8]')
+print(btn.text)
 
 # TODO try loop to escape error
 # time.sleep(5)
