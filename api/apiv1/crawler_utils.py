@@ -11,6 +11,7 @@ HOME_URL='https://www.nankankeiba.com/'
 def update_uma_csv():
    uma_link_set = set()
    df = pd.DataFrame()
+   
    raceset_link_list = __get_raceset_link_list_from_entries_link()
    logger.info(raceset_link_list)
 
@@ -27,12 +28,11 @@ def update_uma_csv():
 def crawl_df_of_this_week_race():
    uma_link_set = set()
    
-   raceset_link_list = __get_raceset_link_list_from_entries_link(filter_by_this_week=True)
+   raceset_link_list = __get_raceset_link_list_from_entries_link()
    for link in raceset_link_list:
       uma_link_list = __get_uma_link_list_from_race_link(link)
       uma_link_set |= set(uma_link_list)
-   
-   print('ok le')
+   # TODO CHECK DATA
    return 
 
 def __url_to_soup(url):
@@ -45,7 +45,7 @@ def __get_raceset_link_list_from_entries_link(entris_link='program/0000000000000
     if filter_by_this_week == False:
       raceset_link_list = [ link.attrs['href'] for link in soup.find_all(href=re.compile("/race_info/*"))]
     else:
-      raceset_link_list = [soup]
+      raceset_link_list = [soup]# TODO 
     print(raceset_link_list)
 
     return raceset_link_list
