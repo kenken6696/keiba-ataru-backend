@@ -3,6 +3,7 @@ version: "3"
 services:
   api:
     build: ./docker/api
+    image: skyeanka/keiba-ataru-backend
     volumes:
       - .:/code
     tty: true
